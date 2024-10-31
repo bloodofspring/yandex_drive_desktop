@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6 import uic
-from PyQt6.QtWidgets import QMainWindow, QApplication, QDialog
+from PyQt6.QtWidgets import QMainWindow, QApplication
 
 from app_windows.registration.registration_failed import RegistrationFailed
 from database import create_tables

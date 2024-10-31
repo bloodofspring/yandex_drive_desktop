@@ -13,6 +13,5 @@ class RegistrationFailed(QDialog):
         self.buttonBox.accepted.connect(self.__close)
         self.buttonBox.rejected.connect(self.__close)
 
-
     def __close(self):
         self.close()
