@@ -10,7 +10,7 @@ from database import create_tables
 class RegistrationMain(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('oauth_yandex_main_template.ui', self)
+        uic.loadUi('oauth_yandex_template_main.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
         self.check_button_signals()
