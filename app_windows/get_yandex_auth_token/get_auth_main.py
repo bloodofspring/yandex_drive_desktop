@@ -3,7 +3,7 @@ import sys
 from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
-from app_windows.get_yandex_auth_token.check_input_token import WrongTokenDialog, AskToken
+from app_windows.get_yandex_auth_token.check_input_token import AskToken
 from database import create_tables
 
 
@@ -18,9 +18,8 @@ class RegistrationMain(QMainWindow):
     def check_button_signals(self):
         self.submit.clicked.connect(self.token_submit_window)
 
-    @staticmethod
-    def token_submit_window():
-        ex_ = AskToken(link=f"https://oauth.yandex.ru/authorize?response_type=token&client_id={None}")
+    def token_submit_window(self):
+        ex_ = AskToken(f"https://oauth.yandex.ru/authorize?response_type=token&client_id={self.client_id_field.text()}")
         ex_.exec()
 
 
@@ -31,4 +30,3 @@ if __name__ == '__main__':
     ex = RegistrationMain()
     ex.show()
     sys.exit(app.exec())
-

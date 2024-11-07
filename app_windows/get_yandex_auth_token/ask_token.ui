@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
-    <height>272</height>
+    <width>614</width>
+    <height>292</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>591</width>
-     <height>253</height>
+     <height>267</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -39,7 +39,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="link">
         <property name="text">
          <string>Перейдите по ссылке</string>
         </property>
@@ -59,7 +59,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label">
         <property name="text">
          <string/>
         </property>
@@ -96,8 +96,19 @@
         </property>
        </widget>
       </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="token_input"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="submit">
+        <property name="text">
+         <string>Ввод</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
