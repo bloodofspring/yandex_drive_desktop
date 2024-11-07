@@ -3,7 +3,7 @@ import sys
 from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
-from app_windows.get_yandex_auth_token.check_input_token import CheckInputToken
+from app_windows.get_yandex_auth_token.check_input_token import WrongTokenDialog, AskToken
 from database import create_tables
 
 
@@ -20,7 +20,7 @@ class RegistrationMain(QMainWindow):
 
     @staticmethod
     def token_submit_window():
-        ex_ = CheckInputToken(link_to_get_tkkn=f"")
+        ex_ = AskToken(link=f"https://oauth.yandex.ru/authorize?response_type=token&client_id={None}")
         ex_.exec()
 
 
