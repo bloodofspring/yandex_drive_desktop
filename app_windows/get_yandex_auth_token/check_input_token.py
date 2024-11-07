@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QDialog
 class WrongTokenDialog(QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi('.ui', self)
+        uic.loadUi('wrong_token_dialog.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
         self.buttonBox.accepted.connect(self.check_and_close)
