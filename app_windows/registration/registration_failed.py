@@ -1,17 +1,9 @@
-from PyQt6 import uic
-from PyQt6.QtWidgets import QDialog
+from app_windows.dialog_samples import EmptyDialog
 
 
-class RegistrationFailed(QDialog):
-    def __init__(self, error_message: str):
-        super().__init__()
-        uic.loadUi('registration_failed_template.ui', self)
-        self.setFixedSize(self.size())  # Запретить изменение окна
+class WrongRegDataDialog(EmptyDialog):
+    INFO = "Указан неверный логин или пароль!"
 
-        self.error_label.setText(error_message)
 
-        self.buttonBox.accepted.connect(self.__close)
-        self.buttonBox.rejected.connect(self.__close)
-
-    def __close(self):
-        self.close()
+class LoginIsTakenDialog(EmptyDialog):
+    INFO = "Этот логин уже занят!"

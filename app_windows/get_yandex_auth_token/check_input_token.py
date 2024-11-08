@@ -1,21 +1,13 @@
-from yadisk import YaDisk
 import pyperclip
-
 from PyQt6 import uic
 from PyQt6.QtWidgets import QDialog
+from yadisk import YaDisk
+
+from app_windows.dialog_samples import EmptyDialog
 
 
-class WrongTokenDialog(QDialog):
-    def __init__(self):
-        super().__init__()
-        uic.loadUi('wrong_token_dialog.ui', self)
-        self.setFixedSize(self.size())  # Запретить изменение окна
-
-        self.buttonBox.accepted.connect(self.check_and_close)
-        self.buttonBox.rejected.connect(self.check_and_close)
-
-    def check_and_close(self):
-        self.close()
+class WrongTokenDialog(EmptyDialog):
+    INFO = "Указан неверный токен!"
 
 
 class AskToken(QDialog):

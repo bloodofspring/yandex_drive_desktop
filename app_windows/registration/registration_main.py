@@ -3,7 +3,7 @@ import sys
 from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
-from app_windows.registration.registration_failed import RegistrationFailed
+from app_windows.registration.registration_failed import WrongRegDataDialog, LoginIsTakenDialog
 from database import create_tables
 from database.models import AppUser, AppUserConfig
 
@@ -32,18 +32,18 @@ class RegistrationMain(QMainWindow):
 
     def check_user_data(self):
         if not self.users_with_same_login:
-            self.show_reg_failed_window(error_message="Неверный логин!")
+            WrongRegDataDialog().exec()
             return
 
         if self.users_with_same_login.config[0].password != self.password_filed.text().strip():
-            self.show_reg_failed_window(error_message="Неверный пароль!")
+            WrongRegDataDialog().exec()
             return
 
         return 3  # Все проверки пройдены
 
     def registrate_new_user(self):
         if self.users_with_same_login:
-            self.show_reg_failed_window(error_message=f"Логин {self.login_field.text().strip()} уже занят!")
+            LoginIsTakenDialog().exec()
             return  # логин уже занят
 
         AppUserConfig.create(
@@ -54,11 +54,6 @@ class RegistrationMain(QMainWindow):
         )
 
         return 3  # Аккаунт создан, все проверки пройдены
-
-    @staticmethod
-    def show_reg_failed_window(error_message: str):
-        ex_ = RegistrationFailed(error_message=error_message)
-        ex_.exec()
 
 
 # Для тестов
