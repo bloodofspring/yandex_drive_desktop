@@ -1,5 +1,6 @@
 import sys
 
+import pyperclip
 from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
@@ -16,7 +17,12 @@ class RegistrationMain(QMainWindow):
         self.check_button_signals()
 
     def check_button_signals(self):
+        self.copy_link.clicked.connect(self.copy_link_to_clipboard)
         self.submit.clicked.connect(self.token_submit_window)
+
+    @staticmethod
+    def copy_link_to_clipboard():
+        pyperclip.copy("https://oauth.yandex.ru/client/new/id")
 
     def token_submit_window(self):
         ex_ = AskToken(f"https://oauth.yandex.ru/authorize?response_type=token&client_id={self.client_id_field.text()}")
