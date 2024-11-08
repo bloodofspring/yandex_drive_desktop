@@ -1,9 +1,21 @@
+import sys
+
+from PyQt6.QtWidgets import QApplication
+
+from app_windows import RegistrationMain
+from database import create_tables
+
+
 class AppRunner:
     def __init__(self):
         pass
 
     def run(self):
-        pass
+        create_tables()
+        app = QApplication(sys.argv)
+        ex = RegistrationMain()
+        ex.show()
+        sys.exit(app.exec())
 
 
 if __name__ == "__main__":

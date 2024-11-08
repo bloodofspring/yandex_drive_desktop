@@ -1,0 +1,1 @@
+from .registration.registration_main import RegistrationMain

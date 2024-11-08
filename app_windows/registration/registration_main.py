@@ -55,12 +55,3 @@ class RegistrationMain(QMainWindow):
         )
 
         return 3  # Аккаунт создан, все проверки пройдены
-
-
-# Для тестов
-if __name__ == '__main__':
-    create_tables()
-    app = QApplication(sys.argv)
-    ex = RegistrationMain()
-    ex.show()
-    sys.exit(app.exec())
