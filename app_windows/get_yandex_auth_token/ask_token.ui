@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>591</width>
-     <height>267</height>
+     <height>277</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -39,9 +39,16 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="link">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Перейдите по ссылке</string>
+         <string>Перейдите по ссылке:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="copy_link">
+        <property name="text">
+         <string>Скопировать ссылку</string>
         </property>
        </widget>
       </item>
@@ -59,7 +66,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="label_2">
         <property name="text">
          <string/>
         </property>
@@ -130,7 +137,7 @@
       <item>
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Если появилась ошибка 400 перепроверьте:</string>
+         <string>Если на странице появилась ошибка 400 перепроверьте:</string>
         </property>
        </widget>
       </item>

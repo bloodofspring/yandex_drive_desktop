@@ -1,4 +1,5 @@
 from yadisk import YaDisk
+import pyperclip
 
 from PyQt6 import uic
 from PyQt6.QtWidgets import QDialog
@@ -23,14 +24,18 @@ class AskToken(QDialog):
         uic.loadUi('ask_token.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
-        self.link.setText("Перейдите по ссылке: " + link)
+        self.link: str = link
 
         self.buttonBox.accepted.connect(self.check_token)
         self.buttonBox.rejected.connect(self.check_and_close)
         self.submit.clicked.connect(self.check_token)
+        self.copy_link.clicked.connect(self.copy_link_to_clipboard)
+
+    def copy_link_to_clipboard(self):
+        pyperclip.copy(self.link)
 
     def check_token(self):
-        if not YaDisk(token=self.token_input.text()).check_token():
+        if not YaDisk(token=self.token_input.text().strip('\n')).check_token():
             ex_ = WrongTokenDialog()
             ex_.exec()
             return
