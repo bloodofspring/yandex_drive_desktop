@@ -5,13 +5,14 @@ from PyQt6 import uic
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
 from app_windows.get_yandex_auth_token.check_input_token import AskToken
+from config import TEMPLATES_PATH
 from database import create_tables
 
 
 class RegistrationMain(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('oauth_yandex_template_main.ui', self)
+        uic.loadUi(f'{TEMPLATES_PATH}oauth_yandex_template_main.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
         self.check_button_signals()

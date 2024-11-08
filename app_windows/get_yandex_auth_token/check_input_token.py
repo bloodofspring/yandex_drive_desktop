@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QDialog
 from yadisk import YaDisk
 
 from app_windows.dialog_samples import EmptyDialog
+from config import TEMPLATES_PATH
 
 
 class WrongTokenDialog(EmptyDialog):
@@ -13,7 +14,7 @@ class WrongTokenDialog(EmptyDialog):
 class AskToken(QDialog):
     def __init__(self, link: str):
         super().__init__()
-        uic.loadUi('ask_token.ui', self)
+        uic.loadUi(f'{TEMPLATES_PATH}ask_token.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
         self.link: str = link

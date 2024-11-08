@@ -1,13 +1,15 @@
 from PyQt6 import uic
 from PyQt6.QtWidgets import QDialog
 
+from config import TEMPLATES_PATH
+
 
 class EmptyDialog(QDialog):
     INFO: str = ""
 
     def __init__(self):
         super().__init__()
-        uic.loadUi("empty_dialog.ui", self)
+        uic.loadUi(f"{TEMPLATES_PATH}empty_dialog.ui", self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
         self.info.setText(self.INFO)
