@@ -1,15 +1,12 @@
-import sys
-
 from PyQt6 import uic
-from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtWidgets import QMainWindow
 
 from app_windows.registration.registration_failed import WrongRegDataDialog, LoginIsTakenDialog
 from config import TEMPLATES_PATH
-from database import create_tables
 from database.models import AppUser, AppUserConfig
 
 
-class RegistrationMain(QMainWindow):
+class RegistrationWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi(f'{TEMPLATES_PATH}reg_page_template.ui', self)

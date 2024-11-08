@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from app_windows import RegistrationMain
+from app_windows import RegistrationWindow
 from database import create_tables
 
 
@@ -13,7 +13,7 @@ class AppRunner:
     def run(self):
         create_tables()
         app = QApplication(sys.argv)
-        ex = RegistrationMain()
+        ex = RegistrationWindow()
         ex.show()
         sys.exit(app.exec())
 

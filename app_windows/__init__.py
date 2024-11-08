@@ -1,1 +1,1 @@
-from .registration.registration_main import RegistrationMain
+from .registration.registration_main import RegistrationWindow
