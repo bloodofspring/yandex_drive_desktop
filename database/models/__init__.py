@@ -1,7 +1,10 @@
-from database.models.users import AppUser, AppUserConfig, FileCat
+from database.models.users import AppUser, AppUserConfig
+from database.models.storage import FileDirectory, File
 
 active_models = [
     AppUser,
     AppUserConfig,
-    FileCat,
+
+    FileDirectory,
+    File,
 ]
