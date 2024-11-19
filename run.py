@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from app_windows import RegistrationMain
+from app_windows import GetAuthTokenDialog
 from database import create_tables
 
 
@@ -10,10 +10,11 @@ class AppRunner:
     def __init__(self):
         pass
 
-    def run(self):
+    @staticmethod
+    def run():
         create_tables()
         app = QApplication(sys.argv)
-        ex = RegistrationMain()
+        ex = GetAuthTokenDialog()
         ex.show()
         sys.exit(app.exec())
 

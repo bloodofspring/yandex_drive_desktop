@@ -1,18 +1,15 @@
-import sys
-
 from PyQt6 import uic
-from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtWidgets import QDialog
 
 from app_windows.registration.registration_failed import WrongRegDataDialog, LoginIsTakenDialog
 from config import TEMPLATES_PATH
-from database import create_tables
 from database.models import AppUser, AppUserConfig
 
 
-class RegistrationMain(QMainWindow):
+class RegistrationDialog(QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi(f'{TEMPLATES_PATH}reg_page_template.ui', self)
+        uic.loadUi(f'{TEMPLATES_PATH}reg_page_template_dialog.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
         self.check_button_signals()
@@ -40,7 +37,7 @@ class RegistrationMain(QMainWindow):
             WrongRegDataDialog().exec()
             return
 
-        return 3  # Все проверки пройдены
+        self.close()
 
     def registrate_new_user(self):
         if self.users_with_same_login:
@@ -54,4 +51,4 @@ class RegistrationMain(QMainWindow):
             user=AppUser.create()
         )
 
-        return 3  # Аккаунт создан, все проверки пройдены
+        self.close()
