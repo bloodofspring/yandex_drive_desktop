@@ -1,1 +1,1 @@
-from .get_auth_main import GetAuthTokenWindow
+from .get_auth_main import GetAuthTokenDialog
