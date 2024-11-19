@@ -18,10 +18,10 @@ class RegistrationDialog(QDialog):
         self.enter_button.clicked.connect(self.check_user_data)
         self.reg_button.clicked.connect(self.registrate_new_user)
 
-    @property
-    def users_with_same_login(self) -> AppUserConfig | None:
+    # @property
+    def users_with_same_login(self) -> AppUser | None:
         login = self.login_field.text().strip()
-        users_with_this_login = AppUserConfig.select().where(AppUserConfig.login == login)[:]
+        users_with_this_login = AppUser.select().where(AppUser.login == login)[:]
 
         if not users_with_this_login:
             return None
@@ -29,11 +29,11 @@ class RegistrationDialog(QDialog):
         return users_with_this_login[0]
 
     def check_user_data(self):
-        if self.users_with_same_login is None:
+        if self.users_with_same_login() is None:
             WrongRegDataDialog().exec()
             return
 
-        if self.users_with_same_login.password != self.password_filed.text().strip():
+        if self.users_with_same_login().config.password != self.password_filed.text().strip():
             WrongRegDataDialog().exec()
             return
 
@@ -42,7 +42,7 @@ class RegistrationDialog(QDialog):
         self.close()
 
     def registrate_new_user(self):
-        if self.users_with_same_login:
+        if self.users_with_same_login() is not None:
             LoginIsTakenDialog().exec()
             return  # логин уже занят
 
