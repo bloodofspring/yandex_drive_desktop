@@ -48,3 +48,4 @@ class GetAuthTokenDialog(QDialog):
         AppUserConfig.save(config)
 
         DataSuccessfullyUpdated().exec()
+        self.close()
