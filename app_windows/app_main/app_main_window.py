@@ -1,10 +1,12 @@
 import sys
 
 from PyQt6 import uic
-from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
+from app_windows.app_main.token_error import WrongToken
 from config import TEMPLATES_PATH
+from database.yadisk import YaDiskDownloader
+from util import get_last_session
 
 
 class FileMainWindow(QMainWindow):
@@ -14,6 +16,15 @@ class FileMainWindow(QMainWindow):
         self.setFixedSize(self.size())  # Запретить изменение окна
 
         self.handle_toolbar()
+
+    def with_user_yadisk(self):
+        last_session = get_last_session()
+        if last_session is None:
+            return
+
+        downloader = YaDiskDownloader(session=last_session)
+        if not downloader.load_user_yadisk():
+            WrongToken().exec()
 
     def handle_toolbar(self):
         self.action_3.triggered.connect(self.debug_action)
@@ -27,8 +38,6 @@ class FileMainWindow(QMainWindow):
 
     def debug_action(self, s):
         print("click", s, self.sender().text())
-
-
 
 
 if __name__ == '__main__':
