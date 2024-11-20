@@ -1,5 +1,3 @@
-# ToDo: Удалить логи
-# ToDo: Выровнять код
 import sys
 
 from PyQt6 import uic
@@ -8,6 +6,7 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea,
 from requests import session
 
 from app_windows import GetAuthTokenDialog
+from app_windows.img_viewer.image_viewer import ImageViewer
 from app_windows.registration import RegistrationDialog
 from config import TEMPLATES_PATH
 from database.models import File, FileDirectory, Session
@@ -42,7 +41,6 @@ class FileMainWindow(QMainWindow):
 
         if not self.session.user.config.has_valid_token:
             GetAuthTokenDialog().exec()  # Получение валидного токена
-            # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
             self.update_session()
             self.check_reqs()  # Будем доставать пользователей пока не выполнят все нужные условия ))
 
@@ -58,7 +56,13 @@ class FileMainWindow(QMainWindow):
         self.render_window()
 
     def show_file(self):
-        print(self.sender().text())
+        file_name = self.sender().text()
+        full_way = self.path + file_name + "/"
+        print(full_way)
+
+        ImageViewer(full_file_way=full_way).exec()
+        # y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
+        # : починить кнопку "Ввод" на форме с токеном
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"

@@ -1,4 +1,6 @@
 # ToDo: Удалить метод de_id
+# ToDo: Переделать клиента в ассинхрон
+import os.path
 from typing import Final
 
 import yadisk
@@ -73,3 +75,12 @@ class YaDiskDownloader:
         result = tuple(files + directories)
 
         return result
+
+    def download_file(self, way: str) -> str:
+        if not os.path.exists("downloaded_materials"):
+            os.mkdir("downloaded_materials")
+
+        download_path_name = f"downloaded_materials/{way.rstrip('/').split('/')[-1]}"
+        self.yadisk_client.download(way, download_path_name)
+
+        return download_path_name
