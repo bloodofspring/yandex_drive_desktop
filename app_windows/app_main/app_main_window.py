@@ -4,7 +4,7 @@ from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
 
-from app_windows import GetAuthTokenDialog
+from app_windows.get_yandex_auth_token import GetAuthTokenDialog
 from app_windows.app_main.not_implemented_yet import AddLater
 from app_windows.app_main.updating_dialog import Updating
 from app_windows.change_loginpas_form import ChangeLoginpasDialog
