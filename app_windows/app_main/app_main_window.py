@@ -70,7 +70,6 @@ class FileMainWindow(QMainWindow):
             return
 
         # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
-        # ToDo: починить кнопку "Ввод" на форме с токеном
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
