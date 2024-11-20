@@ -1,3 +1,5 @@
+import os
+
 from PyQt6 import uic
 from PyQt6.QtWidgets import QDialog
 
@@ -53,3 +55,5 @@ class TextEditor(QDialog):
 
         downloader = YaDiskDownloader(session=session)
         downloader.update_file(self.file_way, self.downloaded_file_way)
+
+        os.remove(self.downloaded_file_way)

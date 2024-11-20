@@ -1,8 +1,8 @@
-import pyperclip
 from PyQt6 import uic
 from PyQt6.QtWidgets import QDialog
 from yadisk import YaDisk
 
+from app_windows.change_token_form.not_implemented_yet import AddLater
 from app_windows.dialog_samples import EmptyDialog
 from config import TEMPLATES_PATH
 from database.models import AppUser, AppUserConfig
@@ -13,29 +13,27 @@ class WrongTokenDialog(EmptyDialog):
     INFO = "Указан неверный токен!"
 
 
-class AskToken(QDialog):
-    def __init__(self, link: str):
+class ChangeAuthTokenDialog(QDialog):
+    def __init__(self):
         super().__init__()
-        uic.loadUi(f'{TEMPLATES_PATH}ask_token.ui', self)
+        uic.loadUi(f'{TEMPLATES_PATH}change_token_form.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
-        self.link: str = link
+        self.check_button_signals()
 
-        self.buttonBox.accepted.connect(self.check_token)
-        self.buttonBox.rejected.connect(self.close)
-        self.submit.clicked.connect(self.check_token)
-        self.copy_link.clicked.connect(self.copy_link_to_clipboard)
+    def check_button_signals(self):
+        self.save_btn.clicked.connect(self.check_and_save)
+        self.cancel_btn.clicked.connect(self.close)
+        self.instruction_button.clicked.connect(self.instruction)
 
-    def copy_link_to_clipboard(self):
-        pyperclip.copy(self.link)
-
-    def check_token(self):
+    def check_and_save(self):
         try:
             if not YaDisk(token=self.token_input.text().strip('\n')).check_token():
                 WrongTokenDialog().exec()
                 return
         except UnicodeEncodeError:
             WrongTokenDialog().exec()
+            return
 
         last_session = get_last_session()
         if last_session is None:
@@ -49,9 +47,5 @@ class AskToken(QDialog):
 
         self.close()
 
-    def closeEvent(self, _):
-        last_session = get_last_session()
-        if last_session is None:
-            return False
-
-        return last_session.user.config.has_valid_token
+    def instruction(self):
+        AddLater().exec()

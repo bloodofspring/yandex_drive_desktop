@@ -12,8 +12,13 @@ from database.models.storage import DataModel
 class YaDiskDownloader:
     def __init__(self, session: Session):
         self.db_user: AppUser = session.user
-        self.yadisk_client: Final[yadisk.YaDisk] = yadisk.YaDisk(token=self.db_user.config.yandex_api_key)
-        self.is_token_valid = self.yadisk_client.check_token()
+        try:
+            self.yadisk_client: Final[yadisk.YaDisk] = yadisk.YaDisk(token=self.db_user.config.yandex_api_key)
+            self.is_token_valid = self.yadisk_client.check_token()
+        except UnicodeEncodeError:
+            print(self.db_user.config.yandex_api_key)
+            self.yadisk_client = None
+            self.is_token_valid = False
 
     def directory_exist(self, name: str, path: str) -> bool:
         return FileDirectory.get_or_none(name=name, path=path, owner=self.db_user) is not None
@@ -45,6 +50,22 @@ class YaDiskDownloader:
             new_dir = FileDirectory.create(name=o.name, path=path, owner=self.db_user)
             self.update_data(current_dir=new_dir)
 
+    def delete_non_existent_files(self):
+        data = tuple(
+            File.select().where(File.owner == self.db_user)[:] +
+            FileDirectory.select().where(FileDirectory.owner == self.db_user)[:]
+        )
+
+        for o in data:
+            if self.yadisk_client.exists(o.full_way):
+                continue
+
+            if isinstance(o, File):
+                File.delete_by_id(o.ID)
+
+            if isinstance(o, FileDirectory):
+                FileDirectory.delete_by_id(o.ID)
+
     def load_user_yadisk(self) -> bool:
         if not self.is_token_valid:
             return False
@@ -57,6 +78,7 @@ class YaDiskDownloader:
             print("[!] loading data...")
 
         self.update_data(current_dir=start_dir)
+        self.delete_non_existent_files()
 
         return True
 

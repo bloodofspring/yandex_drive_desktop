@@ -1,0 +1,1 @@
+from .change_loginpas_dialog import ChangeLoginpasDialog
