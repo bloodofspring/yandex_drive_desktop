@@ -1,3 +1,4 @@
+# ToDo: Удалить метод de_id
 from typing import Final
 
 import yadisk

@@ -5,6 +5,7 @@ import sys
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
+from requests import session
 
 from app_windows import GetAuthTokenDialog
 from app_windows.registration import RegistrationDialog
@@ -21,65 +22,57 @@ class FileMainWindow(QMainWindow):
         self.setFixedSize(self.size())
 
         self.path = self.start_path = start_path
+        self.session = get_last_session(show_alert=False)  # Получение сесси
 
         self.check_reqs()
         self.handle_toolbar()
 
+    def update_session(self):
+        latest_session = get_last_session(show_alert=False)
+        if latest_session is None:
+            return
+
+        self.session = latest_session
+
     def check_reqs(self):
-        if self.last_session is None:
+        if self.session is None:
             RegistrationDialog().exec()  # Создание сессии
+            self.session = get_last_session(show_alert=False)
+            self.check_reqs()  # Будем доставать пользователей пока не выполнят все нужные условия ))
 
-        if not self.last_session.user.config.has_valid_token:
+        if not self.session.user.config.has_valid_token:
             GetAuthTokenDialog().exec()  # Получение валидного токена
-
-        self.check_reqs()  # Будем доставать пользователей пока не выполнят все нужные условия ))
+            # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
+            self.update_session()
+            self.check_reqs()  # Будем доставать пользователей пока не выполнят все нужные условия ))
 
         self.update_data()
         self.render_window()
 
-
-    @property
-    def last_session(self) -> Session | None:
-        last_session = get_last_session(show_alert=False)
-        if last_session is None:
-            return
-
-        return last_session
-
-    @staticmethod
-    def update_data():
-        last_session = get_last_session(show_alert=False)
-        if last_session is None:
-            return
-
-        downloader = YaDiskDownloader(session=last_session)
+    def update_data(self):
+        downloader = YaDiskDownloader(session=self.session)
         downloader.load_user_yadisk()
 
     def to_prev_path(self):
         self.path = "/".join(self.path.rstrip("/").split("/")[:-1]) + "/"
         print(999999999999, self.path)
-        self.display_data_from_yadisk()
+        self.render_window()
 
     def show_file(self):
         print(self.sender().text())
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
-        # self.path = self.path.strip("/")
         print(1192831290283912, self.path)
+        self.render_window()
 
-        self.display_data_from_yadisk()
-
-    def render_window(self, show_alert: bool = True):
-        last_session = get_last_session(show_alert=show_alert)
-        if last_session is None:
-            return
-
-        downloader = YaDiskDownloader(session=last_session)
-        # downloader.load_user_yadisk()
+    def render_window(self):
+        downloader = YaDiskDownloader(session=self.session)
         data = downloader.get_path_data(self.path)
+
         print(*map(lambda x: x.full_way, FileDirectory.select()), sep=" || ")
         print(self.path, data)
+
         to_display = list(map(
             lambda d: {"text": d.name, "callback": "show_file" if isinstance(d, File) else "show_directory"},
             data
@@ -128,11 +121,6 @@ class FileMainWindow(QMainWindow):
 
         self.setFixedWidth(layout.maximumSize().width())
         self.setCentralWidget(scroll)
-
-    @property
-    def need_valid_token(self):
-        last_session = get_last_session()
-        return (last_session is None) or (not last_session.user.config.has_valid_token)
 
     def handle_toolbar(self):
         self.action_3.triggered.connect(self.debug_action)

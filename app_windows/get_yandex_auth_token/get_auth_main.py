@@ -4,6 +4,8 @@ from PyQt6.QtWidgets import QDialog
 
 from app_windows.get_yandex_auth_token.check_input_token import AskToken
 from config import TEMPLATES_PATH
+from database.models import AppUserConfig
+from util import get_last_session
 
 
 class GetAuthTokenDialog(QDialog):
