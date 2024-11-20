@@ -62,6 +62,7 @@ class FileMainWindow(QMainWindow):
         ImageViewer(full_file_way=full_way).exec()
         # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
         # ToDo: починить кнопку "Ввод" на форме с токеном
+        # ToDo: ДОБАВИТЬ ПРОЕВРКУ ТИПА ФАЙЛА (метод show_file)
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
