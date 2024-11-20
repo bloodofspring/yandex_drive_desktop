@@ -1,6 +1,8 @@
-from database import db
-from peewee import Model, AutoField, DateTimeField
 from datetime import datetime
+
+from peewee import Model, AutoField, DateTimeField
+
+from database.db_init import db
 
 
 class BaseModel(Model):
