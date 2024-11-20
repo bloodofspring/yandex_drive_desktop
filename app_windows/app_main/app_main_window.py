@@ -5,6 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
 
 from app_windows import GetAuthTokenDialog
+from app_windows.app_main.not_implemented_yet import AddLater
 from app_windows.app_main.updating_dialog import Updating
 from app_windows.img_viewer import ImageViewer
 from app_windows.registration import RegistrationDialog
@@ -129,17 +130,21 @@ class FileMainWindow(QMainWindow):
         self.setCentralWidget(scroll)
 
     def handle_toolbar(self):
-        self.action_3.triggered.connect(self.debug_action)
-        self.action_4.triggered.connect(self.debug_action)
-        self.action_5.triggered.connect(self.debug_action)
-        self.action_6.triggered.connect(self.debug_action)
-        self.action_7.triggered.connect(self.debug_action)
-        self.action_8.triggered.connect(self.debug_action)
-        self.action_9.triggered.connect(self.debug_action)
+        self.action_3.triggered.connect(self.show_add_later)
+        self.action_4.triggered.connect(self.debug_action)  # ToDo: Добавить окно для смены токена авторизации
+        self.action_5.triggered.connect(self.show_add_later)
+        self.action_6.triggered.connect(self.show_add_later)
+        self.action_7.triggered.connect(self.debug_action)  # ToDo: реализовать смену логинапароля
+        self.action_8.triggered.connect(self.show_add_later)
+        self.action_9.triggered.connect(self.show_add_later)
         self.action_10.triggered.connect(self.update_data)
 
     def debug_action(self, s):
         print("click", s, self.sender().text())
+
+    @staticmethod
+    def show_add_later():
+        AddLater().exec()
 
     def closeEvent(self, _):
         Session.truncate_table()  # ha-ha-ha.
