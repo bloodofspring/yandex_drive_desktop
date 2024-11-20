@@ -137,7 +137,7 @@ class FileMainWindow(QMainWindow):
         self.action_7.triggered.connect(self.debug_action)
         self.action_8.triggered.connect(self.debug_action)
         self.action_9.triggered.connect(self.debug_action)
-        self.action_10.triggered.connect(self.debug_action)
+        self.action_10.triggered.connect(self.update_data)
 
     def debug_action(self, s):
         print("click", s, self.sender().text())
