@@ -12,6 +12,7 @@ class TextEditor(QDialog):
         uic.loadUi(f'{TEMPLATES_PATH}text_editor.ui', self)
         self.setWindowTitle("Text Editor")
         self.setFixedSize(self.size())
+        self.input_field.setReadOnly(False)
 
         self.file_way = full_file_way
         self.downloaded_file_way: str = ""
@@ -20,14 +21,14 @@ class TextEditor(QDialog):
         self.handle_buttons()
 
     def handle_buttons(self):
-        self.save_and_exit.clocked.connect(self.save_and_exit)
-        self.dont_save_and_exit.clocked.connect(self.close)
-        self.clear_input_field.clocked.connect(self.clear_field)
+        self.save_and_exit.clicked.connect(self.save_and_exit_func)
+        self.dont_save_and_exit.clicked.connect(self.close)
+        self.clear_input_field.clicked.connect(self.clear_field)
 
     def clear_field(self):
         self.input_field.clear()
 
-    def save_and_exit(self):
+    def save_and_exit_func(self):
         self.save_text()
         self.close()
 

@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea,
 from app_windows import GetAuthTokenDialog
 from app_windows.img_viewer import ImageViewer
 from app_windows.registration import RegistrationDialog
+from app_windows.text_editor import TextEditor
 from config import TEMPLATES_PATH
 from database.models import File, Session
 from database.yadisk import YaDiskDownloader
@@ -57,12 +58,17 @@ class FileMainWindow(QMainWindow):
     def show_file(self):
         file_name = self.sender().text()
         full_way = self.path + file_name + "/"
-        print(full_way)
 
-        ImageViewer(full_file_way=full_way).exec()
+        if file_name.endswith(".txt"):
+            TextEditor(full_file_way=full_way).exec()
+            return
+
+        if any(map(lambda e: file_name.endswith(e), (".jpg", ".jpeg", ".png"))):
+            ImageViewer(full_file_way=full_way).exec()
+            return
+
         # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
         # ToDo: починить кнопку "Ввод" на форме с токеном
-        # ToDo: ДОБАВИТЬ ПРОЕВРКУ ТИПА ФАЙЛА (метод show_file)
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
