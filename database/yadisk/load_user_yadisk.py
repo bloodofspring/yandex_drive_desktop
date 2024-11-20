@@ -48,7 +48,7 @@ class YaDiskDownloader:
     def delete_non_existent_files(self):
         data = tuple(
             File.select().where(File.owner == self.db_user)[:] +
-            FileDirectory.select().where(File.owner == self.db_user)[:]
+            FileDirectory.select().where(FileDirectory.owner == self.db_user)[:]
         )
 
         for o in data:
