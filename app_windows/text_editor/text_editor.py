@@ -1,5 +1,5 @@
 from PyQt6 import uic
-from PyQt6.QtWidgets import QDialog, QTextBrowser
+from PyQt6.QtWidgets import QDialog
 
 from config import TEMPLATES_PATH
 from database.yadisk import YaDiskDownloader
