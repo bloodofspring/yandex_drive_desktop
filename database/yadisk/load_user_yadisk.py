@@ -12,8 +12,13 @@ from database.models.storage import DataModel
 class YaDiskDownloader:
     def __init__(self, session: Session):
         self.db_user: AppUser = session.user
-        self.yadisk_client: Final[yadisk.YaDisk] = yadisk.YaDisk(token=self.db_user.config.yandex_api_key)
-        self.is_token_valid = self.yadisk_client.check_token()
+        try:
+            self.yadisk_client: Final[yadisk.YaDisk] = yadisk.YaDisk(token=self.db_user.config.yandex_api_key)
+            self.is_token_valid = self.yadisk_client.check_token()
+        except UnicodeEncodeError:
+            print(self.db_user.config.yandex_api_key)
+            self.yadisk_client = None
+            self.is_token_valid = False
 
     def directory_exist(self, name: str, path: str) -> bool:
         return FileDirectory.get_or_none(name=name, path=path, owner=self.db_user) is not None
@@ -73,7 +78,7 @@ class YaDiskDownloader:
             print("[!] loading data...")
 
         self.update_data(current_dir=start_dir)
-        # self.delete_non_existent_files()  ToDo: раскомментить
+        self.delete_non_existent_files()
 
         return True
 
