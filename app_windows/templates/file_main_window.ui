@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>860</width>
+    <height>650</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>862</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>натройки</string>
+    </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>токен авторизации</string>
+     </property>
+     <addaction name="action_4"/>
+    </widget>
+    <addaction name="menu_2"/>
+    <addaction name="action_3"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>создать</string>
+    </property>
+    <addaction name="action_8"/>
+    <addaction name="action_9"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>обновить</string>
+    </property>
+    <addaction name="action_10"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_4"/>
+   <addaction name="menu_5"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_3">
+   <property name="text">
+    <string>политика безопасности</string>
+   </property>
+  </action>
+  <action name="action_beta">
+   <property name="text">
+    <string>обучение (beta)</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>изменить токен авторизации</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>настроить длину сессии</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>выйти</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="text">
+    <string>сменить логин/пароль</string>
+   </property>
+  </action>
+  <action name="action_8">
+   <property name="text">
+    <string>директорию</string>
+   </property>
+  </action>
+  <action name="action_9">
+   <property name="text">
+    <string>загрузить файл</string>
+   </property>
+  </action>
+  <action name="action_10">
+   <property name="text">
+    <string>обновить данные</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
