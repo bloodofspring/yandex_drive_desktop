@@ -1,4 +1,3 @@
-# ToDo: Удалить метод de_id
 # ToDo: Переделать клиента в ассинхрон
 import os.path
 from typing import Final
@@ -15,10 +14,6 @@ class YaDiskDownloader:
         self.db_user: AppUser = session.user
         self.yadisk_client: Final[yadisk.YaDisk] = yadisk.YaDisk(token=self.db_user.config.yandex_api_key)
         self.is_token_valid = self.yadisk_client.check_token()
-
-    @classmethod
-    def de_id(cls, id_: int):
-        return cls(session=Session.create(user=AppUser.get_by_id(id_)))
 
     def directory_exist(self, name: str, path: str) -> bool:
         return FileDirectory.get_or_none(name=name, path=path, owner=self.db_user) is not None
@@ -84,3 +79,7 @@ class YaDiskDownloader:
         self.yadisk_client.download(way, download_path_name)
 
         return download_path_name
+
+    def update_file(self, yadisk_way: str, new_file: str):
+        self.yadisk_client.remove(yadisk_way)
+        self.yadisk_client.upload(new_file, yadisk_way)
