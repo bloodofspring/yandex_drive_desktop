@@ -1,8 +1,10 @@
 import os
 
+from PIL import Image
 from PyQt6 import uic
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QWidget, QGridLayout
 
 from config import TEMPLATES_PATH
 from database.yadisk import YaDiskDownloader
@@ -13,16 +15,9 @@ class ImageViewer(QDialog):
     def __init__(self, full_file_way: str):
         super().__init__()
         uic.loadUi(f'{TEMPLATES_PATH}img_view_template.ui', self)
-        self.setFixedSize(self.size())  # Запретить изменение окна
         self.setWindowTitle("Image Viewer")
-
         self.file_way = full_file_way
-
-        self.handle_buttons()
-
-    def handle_buttons(self):
-        self.back.clicked.connect(self.close)
-        self.delete.clicked.connect(self.delete_file_from_yadisk)
+        self.display_file()
 
     def load_file(self) -> str:
         session = get_last_session()
@@ -32,14 +27,33 @@ class ImageViewer(QDialog):
         downloader = YaDiskDownloader(session=session)
         return downloader.download_file(way=self.file_way)
 
-    def delete_file_from_yadisk(self):
-        print("Not implemented yet")
-
     def display_file(self):
         name = self.load_file()
 
         pixmap = QPixmap(name)
+        im = Image.open(name)
+        width, height = im.size
+
+        if width > 1000:
+            width = 1000
+
+        if height > 500:
+            height = 500
+
         self.image.setPixmap(pixmap)
-        self.resize(pixmap.width(), pixmap.height() + 20)
+        self.image.resize(width, height)
+
+        layout = QGridLayout()
+        layout.addWidget(self.image)
+        widget = QWidget()
+        widget.setLayout(layout)
+
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setWidget(widget)
+        self.scrollArea.resize(width, height)
+
+        self.setFixedSize(width, height)
 
         os.remove(name)
