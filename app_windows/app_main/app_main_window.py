@@ -3,13 +3,12 @@ import sys
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
-from requests import session
 
 from app_windows import GetAuthTokenDialog
-from app_windows.img_viewer.image_viewer import ImageViewer
+from app_windows.img_viewer import ImageViewer
 from app_windows.registration import RegistrationDialog
 from config import TEMPLATES_PATH
-from database.models import File, FileDirectory, Session
+from database.models import File, Session
 from database.yadisk import YaDiskDownloader
 from util import get_last_session
 
@@ -61,8 +60,8 @@ class FileMainWindow(QMainWindow):
         print(full_way)
 
         ImageViewer(full_file_way=full_way).exec()
-        # y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
-        # : починить кнопку "Ввод" на форме с токеном
+        # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
+        # ToDo: починить кнопку "Ввод" на форме с токеном
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
