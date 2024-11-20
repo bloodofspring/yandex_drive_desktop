@@ -1,3 +1,4 @@
+import os
 import sys
 
 from PyQt6 import uic
@@ -21,7 +22,8 @@ class ImageViewer(QDialog):
         self.handle_buttons()
 
     def handle_buttons(self):
-        pass
+        self.back.clicked.connect(self.close)
+        self.delete.clicked.connect(self.delete_file_from_yadisk)
 
     def load_file(self) -> str:
         session = get_last_session()
@@ -31,11 +33,11 @@ class ImageViewer(QDialog):
         downloader = YaDiskDownloader(session=session)
         return downloader.download_file(way=self.file_way)
 
-    def delete_file(self):
+    def delete_file_from_yadisk(self):
         pass
 
     def display_file(self):
-        pass
+        os.remove("")
 
 
 if __name__ == "__main__":
