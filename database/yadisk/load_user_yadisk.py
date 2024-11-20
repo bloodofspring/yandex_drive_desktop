@@ -79,3 +79,7 @@ class YaDiskDownloader:
         self.yadisk_client.download(way, download_path_name)
 
         return download_path_name
+
+    def update_file(self, yadisk_way: str, new_file: str):
+        self.yadisk_client.remove(yadisk_way)
+        self.yadisk_client.upload(new_file, yadisk_way)
