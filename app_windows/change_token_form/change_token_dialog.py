@@ -13,7 +13,7 @@ class WrongTokenDialog(EmptyDialog):
     INFO = "Указан неверный токен!"
 
 
-class GetAuthTokenDialog(QDialog):
+class ChangeAuthTokenDialog(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi(f'{TEMPLATES_PATH}change_token_form.ui', self)

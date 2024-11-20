@@ -8,6 +8,7 @@ from app_windows import GetAuthTokenDialog
 from app_windows.app_main.not_implemented_yet import AddLater
 from app_windows.app_main.updating_dialog import Updating
 from app_windows.change_loginpas_form import ChangeLoginpasDialog
+from app_windows.change_token_form import ChangeAuthTokenDialog
 from app_windows.img_viewer import ImageViewer
 from app_windows.registration import RegistrationDialog
 from app_windows.text_editor import TextEditor
@@ -132,10 +133,10 @@ class FileMainWindow(QMainWindow):
 
     def handle_toolbar(self):
         self.action_3.triggered.connect(lambda _: AddLater().exec())
-        self.action_4.triggered.connect(lambda _: AddLater().exec())  # ToDo: Добавить окно для смены токена авторизации
+        self.action_4.triggered.connect(lambda _: ChangeAuthTokenDialog().exec())  # ToDo: протестировать
         self.action_5.triggered.connect(lambda _: AddLater().exec())
         self.action_6.triggered.connect(lambda _: AddLater().exec())
-        self.action_7.triggered.connect(lambda _: ChangeLoginpasDialog().exec())  # ToDo: реализовать смену логинапароля
+        self.action_7.triggered.connect(lambda _: ChangeLoginpasDialog().exec())
         self.action_8.triggered.connect(lambda _: AddLater().exec())
         self.action_9.triggered.connect(lambda _: AddLater().exec())
         self.action_10.triggered.connect(self.update_data)
