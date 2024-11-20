@@ -35,6 +35,7 @@
     </widget>
     <addaction name="menu_2"/>
     <addaction name="action_3"/>
+    <addaction name="action_7"/>
    </widget>
    <widget class="QMenu" name="menu_4">
     <property name="title">

@@ -73,7 +73,7 @@ class YaDiskDownloader:
             print("[!] loading data...")
 
         self.update_data(current_dir=start_dir)
-        self.delete_non_existent_files()
+        # self.delete_non_existent_files()  ToDo: раскомментить
 
         return True
 

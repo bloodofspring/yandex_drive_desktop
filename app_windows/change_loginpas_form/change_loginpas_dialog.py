@@ -8,7 +8,7 @@ from database.models import AppUser, AppUserConfig
 from util import get_last_session
 
 
-class GetAuthTokenDialog(QDialog):
+class ChangeLoginpasDialog(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi(f'{TEMPLATES_PATH}change_loginpas_form.ui', self)
