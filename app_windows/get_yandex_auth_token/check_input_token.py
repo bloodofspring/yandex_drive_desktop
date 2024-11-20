@@ -22,7 +22,7 @@ class AskToken(QDialog):
         self.link: str = link
 
         self.buttonBox.accepted.connect(self.check_token)
-        self.buttonBox.rejected.connect(lambda self: self.close())
+        self.buttonBox.rejected.connect(self.close)
         self.submit.clicked.connect(self.check_token)
         self.copy_link.clicked.connect(self.copy_link_to_clipboard)
 

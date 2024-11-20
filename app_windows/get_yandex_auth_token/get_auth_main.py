@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QDialog
 from app_windows.get_yandex_auth_token.check_input_token import AskToken
 from app_windows.registration.registration_main import RegistrationDialog
 from config import TEMPLATES_PATH
+from util import get_last_session
 
 
 class GetAuthTokenDialog(QDialog):
@@ -13,6 +14,10 @@ class GetAuthTokenDialog(QDialog):
         uic.loadUi(f'{TEMPLATES_PATH}oauth_yandex_dialog.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
 
+        # last_session = get_last_session()
+        # if last_session is not None and last_session.user.config.has_valid_token:
+        #     print("closing...")
+        #     self.close()
         self.show_registration_dialog()
         self.check_button_signals()
 
