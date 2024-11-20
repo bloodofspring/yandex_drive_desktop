@@ -86,6 +86,15 @@ class FileMainWindow(QMainWindow):
         if not downloader.load_user_yadisk():
             WrongToken().exec()
 
+    @property
+    def need_registration(self) -> bool:
+        return True  # ToDo: Связать с настройками логаута
+
+    @property
+    def need_valid_token(self):
+        last_session = get_last_session()
+        return (last_session is None) or (not YaDiskDownloader(last_session).is_token_valid)
+
     def handle_toolbar(self):
         self.action_3.triggered.connect(self.debug_action)
         self.action_4.triggered.connect(self.debug_action)
