@@ -4,9 +4,9 @@ from PyQt6.QtWidgets import QDialog
 from yadisk import YaDisk
 
 from app_windows.dialog_samples import EmptyDialog
-from app_windows.get_yandex_auth_token.auth_failed import AuthFailed
 from config import TEMPLATES_PATH
-from database.models import Session, AppUser, AppUserConfig
+from database.models import AppUser, AppUserConfig
+from util import get_last_session
 
 
 class WrongTokenDialog(EmptyDialog):
@@ -22,7 +22,7 @@ class AskToken(QDialog):
         self.link: str = link
 
         self.buttonBox.accepted.connect(self.check_token)
-        self.buttonBox.rejected.connect(lambda self: self.close())
+        self.buttonBox.rejected.connect(self.close)
         self.submit.clicked.connect(self.check_token)
         self.copy_link.clicked.connect(self.copy_link_to_clipboard)
 
@@ -35,15 +35,21 @@ class AskToken(QDialog):
             ex_.exec()
             return
 
-        try:
-            user: AppUser = Session.select().order_by(Session.created_at.desc())[-1].user
-        except IndexError:
-            AuthFailed().exec()
+        last_session = get_last_session()
+        if last_session is None:
             return
 
+        user: AppUser = last_session.user
         config: AppUserConfig = user.config
         config.yandex_api_key = self.token_input.text().strip('\n')
+        config.has_valid_token = True
         AppUserConfig.save(config)
-        print("token saved!")
 
         self.close()
+
+    def closeEvent(self, _):
+        last_session = get_last_session()
+        if last_session is None:
+            return False
+
+        return last_session.user.config.has_valid_token
