@@ -55,7 +55,6 @@ class FileMainWindow(QMainWindow):
 
     def to_prev_path(self):
         self.path = "/".join(self.path.rstrip("/").split("/")[:-1]) + "/"
-        print(999999999999, self.path)
         self.render_window()
 
     def show_file(self):
@@ -63,15 +62,11 @@ class FileMainWindow(QMainWindow):
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
-        print(1192831290283912, self.path)
         self.render_window()
 
     def render_window(self):
         downloader = YaDiskDownloader(session=self.session)
         data = downloader.get_path_data(self.path)
-
-        print(*map(lambda x: x.full_way, FileDirectory.select()), sep=" || ")
-        print(self.path, data)
 
         to_display = list(map(
             lambda d: {"text": d.name, "callback": "show_file" if isinstance(d, File) else "show_directory"},
@@ -86,7 +81,7 @@ class FileMainWindow(QMainWindow):
 
         self.display(data=to_display)
 
-    def display(self, data: list[dict[str, str]], row_width: int = 10, size: int = 200):  # {"text", "callback"}
+    def display(self, data: list[dict[str, str]], row_width: int = 5, size: int = 200):  # {"text", "callback"}
         x_pos = 0
         y_pos = 0
         layout = QGridLayout()
