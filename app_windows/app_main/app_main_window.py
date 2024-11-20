@@ -1,5 +1,3 @@
-# ToDo: Удалить логи
-# ToDo: Выровнять код
 import sys
 
 from PyQt6 import uic
@@ -42,7 +40,6 @@ class FileMainWindow(QMainWindow):
 
         if not self.session.user.config.has_valid_token:
             GetAuthTokenDialog().exec()  # Получение валидного токена
-            # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
             self.update_session()
             self.check_reqs()  # Будем доставать пользователей пока не выполнят все нужные условия ))
 
