@@ -33,6 +33,7 @@ class ChangeAuthTokenDialog(QDialog):
                 return
         except UnicodeEncodeError:
             WrongTokenDialog().exec()
+            return
 
         last_session = get_last_session()
         if last_session is None:
