@@ -27,10 +27,12 @@ class ChangeAuthTokenDialog(QDialog):
         self.instruction_button.clicked.connect(self.instruction)
 
     def check_and_save(self):
-        if not YaDisk(token=self.token_input.text().strip('\n')).check_token():
-            ex_ = WrongTokenDialog()
-            ex_.exec()
-            return
+        try:
+            if not YaDisk(token=self.token_input.text().strip('\n')).check_token():
+                WrongTokenDialog().exec()
+                return
+        except UnicodeEncodeError:
+            WrongTokenDialog().exec()
 
         last_session = get_last_session()
         if last_session is None:
