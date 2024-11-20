@@ -46,3 +46,10 @@ class AskToken(QDialog):
         AppUserConfig.save(config)
 
         self.close()
+
+    def closeEvent(self, _):
+        last_session = get_last_session()
+        if last_session is None:
+            return False
+
+        return last_session.user.config.has_valid_token

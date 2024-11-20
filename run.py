@@ -23,11 +23,11 @@ class AppRunner:
     def check_main_window_state(self, window_instance: FileMainWindow):
         if window_instance.need_registration:
             self.registration()
-            window_instance.update_()
+            window_instance.render_window()
 
         if window_instance.need_valid_token:
             self.get_token()
-            window_instance.update_()
+            window_instance.render_window()
 
     def run(self):
         create_tables()

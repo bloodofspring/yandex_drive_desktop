@@ -29,4 +29,5 @@ class GetAuthTokenDialog(QDialog):
 
     def token_submit_window(self):
         ex_ = AskToken(f"https://oauth.yandex.ru/authorize?response_type=token&client_id={self.client_id_field.text()}")
-        ex_.exec()
+        if ex_.exec():
+            self.close()
