@@ -48,5 +48,8 @@ class TextEditor(QDialog):
         if session is None:
             self.close()
 
+        with open(self.downloaded_file_way, "w") as f:
+            f.write(self.input_field.toPlainText())
+
         downloader = YaDiskDownloader(session=session)
         downloader.update_file(self.file_way, self.downloaded_file_way)
