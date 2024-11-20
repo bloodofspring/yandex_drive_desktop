@@ -13,6 +13,10 @@ class YaDiskDownloader:
         self.yadisk_client: Final[yadisk.YaDisk] = yadisk.YaDisk(token=self.db_user.config.yandex_api_key)
         self.is_token_valid = self.yadisk_client.check_token()
 
+    @classmethod
+    def de_id(cls, id_: int):
+        return cls(session=Session.create(user=AppUser.get_by_id(id_)))
+
     def directory_exist(self, name: str, path: str) -> bool:
         return FileDirectory.get_or_none(name=name, path=path, owner=self.db_user) is not None
 
@@ -21,14 +25,13 @@ class YaDiskDownloader:
 
     def update_data(self, current_dir):
         try:
-            dirs = tuple(self.yadisk_client.listdir(current_dir.path))
+            dirs = tuple(self.yadisk_client.listdir(current_dir.full_way))
         except PathNotFoundError:
-            print("cannot find path:", current_dir.path)
+            print("cannot find path:", current_dir.full_way)
             return
 
         for o in dirs:
-            path = o.path.strip(f"{o.name}")
-            print(path, o.path, o.name)
+            path = o.path.rstrip(o.name)
 
             if o.type != "dir":
                 if self.file_exist(name=o.name, path=path):
@@ -38,6 +41,7 @@ class YaDiskDownloader:
                 continue
 
             if self.directory_exist(name=o.name, path=path):
+                self.update_data(current_dir=FileDirectory.get(name=o.name, path=path, owner=self.db_user))
                 continue
 
             new_dir = FileDirectory.create(name=o.name, path=path, owner=self.db_user)
@@ -63,9 +67,8 @@ class YaDiskDownloader:
             (File.path == path) & (File.owner == self.db_user)
         )[:]
         directories = FileDirectory.select().where(
-            (FileDirectory.path == path) & (FileDirectory.owner == self.db_user)
+            (FileDirectory.path == path) & (FileDirectory.name != "root") & (FileDirectory.owner == self.db_user)
         )[:]
         result = tuple(files + directories)
 
         return result
-

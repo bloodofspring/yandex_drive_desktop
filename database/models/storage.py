@@ -9,6 +9,10 @@ class DataModel(BaseModel):
     path = CharField()
     owner = ForeignKeyField(AppUser)
 
+    @property
+    def full_way(self):
+        return self.path + (self.name if self.name != "root" else "")
+
 
 class FileDirectory(DataModel):
     pass

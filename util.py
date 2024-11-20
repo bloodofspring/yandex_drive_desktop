@@ -1,5 +1,5 @@
 from app_windows.dialog_samples import EmptyDialog
-from database.models import Session, File, FileDirectory
+from database.models import Session
 
 
 class AuthFailed(EmptyDialog):
@@ -14,6 +14,3 @@ def get_last_session(show_alert: bool = True) -> Session | None:
             AuthFailed().exec()
 
         return None
-
-
-# print(*map(lambda x: x.path, File.select()), sep="\n")

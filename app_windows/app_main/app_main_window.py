@@ -31,7 +31,7 @@ class FileMainWindow(QMainWindow):
 
         downloader = YaDiskDownloader(session=last_session)
         downloader.load_user_yadisk()
-        data = downloader.get_path_data(self.path)
+        data = downloader.get_path_data(self.path[:-1])
         print(self.path, data)
         to_display = list(map(
             lambda d: {"text": d.name, "callback": "show_file" if isinstance(d, File) else "show_directory"},
@@ -51,7 +51,7 @@ class FileMainWindow(QMainWindow):
 
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
-        self.path = self.path.strip("/")
+        # self.path = self.path.strip("/")
         print(1192831290283912, self.path)
 
         self.display_data_from_yadisk()
