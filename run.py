@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtWidgets import QApplication
 
-from app_windows.app_main import FileMainWindow
+from app_windows import FileMainWindow
 from database import create_tables
 
 if __name__ == "__main__":
