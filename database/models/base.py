@@ -2,7 +2,7 @@ from datetime import datetime
 
 from peewee import Model, AutoField, DateTimeField
 
-from database import db
+from database.db_init import db
 
 
 class BaseModel(Model):
