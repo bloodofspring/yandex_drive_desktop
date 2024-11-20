@@ -33,7 +33,7 @@ class AppRunner:
         create_tables()
         app = QApplication(sys.argv)
         ex = FileMainWindow()
-        self.check_main_window_state(window_instance=ex)
+        # self.check_main_window_state(window_instance=ex)
         ex.show()
         sys.exit(app.exec())
 

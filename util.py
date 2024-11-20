@@ -1,5 +1,5 @@
 from app_windows.dialog_samples import EmptyDialog
-from database.models import Session
+from database.models import Session, AppUser
 
 
 class AuthFailed(EmptyDialog):

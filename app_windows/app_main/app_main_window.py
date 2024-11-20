@@ -5,7 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
 
 from config import TEMPLATES_PATH
-from database.models import File
+from database.models import File, FileDirectory
 from database.yadisk import YaDiskDownloader
 from util import get_last_session
 
@@ -24,26 +24,9 @@ class FileMainWindow(QMainWindow):
     def update_(self):
         self.display_data_from_yadisk()
 
-    def display_data_from_yadisk(self, show_alert: bool = True):
-        last_session = get_last_session(show_alert=show_alert)
-        if last_session is None:
-            return
-
-        downloader = YaDiskDownloader(session=last_session)
-        downloader.load_user_yadisk()
-        data = downloader.get_path_data(self.path[:-1])
-        print(self.path, data)
-        to_display = list(map(
-            lambda d: {"text": d.name, "callback": "show_file" if isinstance(d, File) else "show_directory"},
-            data
-        ))
-        if not to_display:
-            to_display = [{"text": "nothing here", "callback": "to_prev_path"},
-                          {"text": "return", "callback": "to_prev_path"}]
-        self.display(data=to_display)
-
     def to_prev_path(self):
-        self.path = "/".join(self.path.split("/")[:-1])
+        self.path = "/".join(self.path.rstrip("/").split("/")[:-1]) + "/"
+        print(999999999999, self.path)
         self.display_data_from_yadisk()
 
     def show_file(self):
@@ -55,6 +38,25 @@ class FileMainWindow(QMainWindow):
         print(1192831290283912, self.path)
 
         self.display_data_from_yadisk()
+
+    def display_data_from_yadisk(self, show_alert: bool = True):
+        last_session = get_last_session(show_alert=show_alert)
+        if last_session is None:
+            return
+
+        downloader = YaDiskDownloader(session=last_session)
+        downloader.load_user_yadisk()
+        data = downloader.get_path_data(self.path)
+        print(*map(lambda x: x.full_way, FileDirectory.select()), sep=" || ")
+        print(self.path, data)
+        to_display = list(map(
+            lambda d: {"text": d.name, "callback": "show_file" if isinstance(d, File) else "show_directory"},
+            data
+        ))
+        if not to_display:
+            to_display = [{"text": "nothing here", "callback": "to_prev_path"},
+                          {"text": "return", "callback": "to_prev_path"}]
+        self.display(data=to_display)
 
     def display(self, data: list[dict[str, str]], row_width: int = 10, size: int = 200):  # {"text", "callback"}
         x_pos = 0
