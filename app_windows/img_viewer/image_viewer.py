@@ -1,12 +1,10 @@
 import os
-import sys
 
 from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QDialog
 
 from config import TEMPLATES_PATH
-from database import create_tables
 from database.yadisk import YaDiskDownloader
 from util import get_last_session
 
@@ -16,6 +14,7 @@ class ImageViewer(QDialog):
         super().__init__()
         uic.loadUi(f'{TEMPLATES_PATH}img_view_template.ui', self)
         self.setFixedSize(self.size())  # Запретить изменение окна
+        self.setWindowTitle("Image Viewer")
 
         self.file_way = full_file_way
 
@@ -34,15 +33,13 @@ class ImageViewer(QDialog):
         return downloader.download_file(way=self.file_way)
 
     def delete_file_from_yadisk(self):
-        pass
+        print("Not implemented yet")
 
     def display_file(self):
-        os.remove("")
+        name = self.load_file()
 
+        pixmap = QPixmap(name)
+        self.image.setPixmap(pixmap)
+        self.resize(pixmap.width(), pixmap.height() + 20)
 
-if __name__ == "__main__":
-    create_tables()
-    app = QApplication(sys.argv)
-    ex = ImageViewer()
-    ex.show()
-    sys.exit(app.exec())
+        os.remove(name)
