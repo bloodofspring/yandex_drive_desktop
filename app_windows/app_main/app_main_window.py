@@ -6,21 +6,39 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea,
 
 from app_windows.app_main.token_error import WrongToken
 from config import TEMPLATES_PATH
+from database.models import File
 from database.yadisk import YaDiskDownloader
 from util import get_last_session
 
 
 class FileMainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, start_path: str = "disk:/"):
         super().__init__()
         uic.loadUi(f'{TEMPLATES_PATH}file_main_window.ui', self)
         self.setFixedSize(self.size())
+
+        self.path = start_path
 
         self.with_user_yadisk()
         self.handle_toolbar()
 
     def display_data_from_yadisk(self):
-        pass
+        last_session = get_last_session()
+        if last_session is None:
+            return
+
+        data = YaDiskDownloader(session=last_session).get_path_data(self.path)
+        self.display(data=list(map(
+            lambda d: {"text": d.name, "callback": "show_file" if isinstance(d, File) else "show_directory"},
+            data
+        )))
+
+    def show_file(self):
+        print(self.sender().text())
+
+    def show_directory(self):
+        self.path = self.path + "/" + self.sender().text()
+        self.display_data_from_yadisk()
 
     def display(self, data: list[dict[str, str]], row_width: int = 10, size: int = 100):  # {"text", "callback"}
         x_pos = 0
