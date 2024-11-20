@@ -13,6 +13,7 @@ class FileDirectory(BaseModel):
 class File(BaseModel):
     name = CharField()
     directory = ForeignKeyField(FileDirectory, backref="files_in")
+    owner = ForeignKeyField(AppUser, backref="files")
 
     @property
     def path(self):
