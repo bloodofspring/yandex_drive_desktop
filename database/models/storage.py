@@ -4,17 +4,15 @@ from database.models import AppUser
 from database.models.base import BaseModel
 
 
-class FileDirectory(BaseModel):
+class DataModel(BaseModel):
     name = CharField()
     path = CharField()
-    owner = ForeignKeyField(AppUser, backref="directories")
+    owner = ForeignKeyField(AppUser)
 
 
-class File(BaseModel):
-    name = CharField()
+class FileDirectory(DataModel):
+    pass
+
+
+class File(DataModel):
     directory = ForeignKeyField(FileDirectory, backref="files_in")
-    owner = ForeignKeyField(AppUser, backref="files")
-
-    @property
-    def path(self):
-        return self.directory.path + "/" + self.name

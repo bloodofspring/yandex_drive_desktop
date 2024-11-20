@@ -1,7 +1,8 @@
 import sys
 
 from PyQt6 import uic
-from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
 
 from app_windows.app_main.token_error import WrongToken
 from config import TEMPLATES_PATH
@@ -13,11 +14,52 @@ class FileMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi(f'{TEMPLATES_PATH}file_main_window.ui', self)
-        self.setFixedSize(self.size())  # Запретить изменение окна
+        self.setFixedSize(self.size())
 
+        self.with_user_yadisk()
         self.handle_toolbar()
 
-    def with_user_yadisk(self):
+    def display_data_from_yadisk(self):
+        pass
+
+    def display(self, data: list[dict[str, str]], row_width: int = 10, size: int = 100):  # {"text", "callback"}
+        x_pos = 0
+        y_pos = 0
+        layout = QGridLayout()
+        scroll = QScrollArea()
+
+        for el in data:
+            if len({"text", "callback"} & set(el.keys())) < 2:
+                continue  # invalid keys
+
+            if not hasattr(self, el["callback"]):
+                continue
+
+            pb = QPushButton()
+            pb.setText(el["text"])
+            pb.setFixedSize(size, size)
+            pb.clicked.connect(getattr(self, el["callback"]))
+            layout.addWidget(pb, y_pos, x_pos)
+
+            x_pos += 1
+
+            if x_pos > row_width:
+                x_pos = 0
+                y_pos += 1
+
+        widget = QWidget()
+        widget.setLayout(layout)
+
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOn)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        scroll.setWidgetResizable(True)
+        scroll.setWidget(widget)
+
+        self.setFixedWidth(layout.maximumSize().width())
+        self.setCentralWidget(scroll)
+
+    @staticmethod
+    def with_user_yadisk():
         last_session = get_last_session()
         if last_session is None:
             return

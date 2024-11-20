@@ -4,6 +4,7 @@ import yadisk
 from yadisk.exceptions import PathNotFoundError
 
 from database.models import Session, AppUser, File, FileDirectory
+from database.models.storage import DataModel
 
 
 class YaDiskDownloader:
@@ -16,12 +17,7 @@ class YaDiskDownloader:
         return FileDirectory.get_or_none(name=name, path=path, owner=self.db_user) is not None
 
     def file_exist(self, name: str, path: str) -> bool:
-        file: File | None = File.get_or_none(name=name, owner=self.db_user)
-
-        if file is None:
-            return False
-
-        return file.path == path
+        return File.get_or_none(name=name, path=path, owner=self.db_user) is not None
 
     def update_data(self, current_dir):
         try:
@@ -35,13 +31,13 @@ class YaDiskDownloader:
                 if self.file_exist(name=o.name, path=o.path):
                     continue
 
-                File.create(name=o.name, directory=current_dir)
+                File.create(name=o.name, path=o.path, directory=current_dir, owner=self.db_user)
                 continue
 
             if self.directory_exist(name=o.name, path=o.path):
                 continue
 
-            new_dir = FileDirectory.create(name=o.name, path=o.path)
+            new_dir = FileDirectory.create(name=o.name, path=o.path, owner=self.db_user)
             self.update_data(current_dir=new_dir)
 
     def load_user_yadisk(self) -> bool:
@@ -52,9 +48,20 @@ class YaDiskDownloader:
             start_dir = FileDirectory.get(name="root", path="disk:/", owner=self.db_user)
             print("[#] updating data...")
         else:
-            start_dir = FileDirectory.create(name="root", path="disk:/")
+            start_dir = FileDirectory.create(name="root", path="disk:/", owner=self.db_user)
             print("[!] loading data...")
 
         self.update_data(current_dir=start_dir)
 
         return True
+
+    def get_path_data(self, path: str) -> tuple[DataModel]:
+        files = File.select().where(
+            (File.path == path) & (File.owner == self.db_user)
+        )[:]
+        directories = FileDirectory.select().where(
+            (FileDirectory.path == path) & (FileDirectory.owner == self.db_user)
+        )[:]
+
+        return tuple(files + directories)
+
