@@ -4,7 +4,6 @@ from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
 
-from app_windows.app_main.token_error import WrongToken
 from config import TEMPLATES_PATH
 from database.models import File
 from database.yadisk import YaDiskDownloader
@@ -19,28 +18,45 @@ class FileMainWindow(QMainWindow):
 
         self.path = start_path
 
-        self.with_user_yadisk()
+        self.display_data_from_yadisk(show_alert=False)
         self.handle_toolbar()
 
-    def display_data_from_yadisk(self):
-        last_session = get_last_session()
+    def update_(self):
+        self.display_data_from_yadisk()
+
+    def display_data_from_yadisk(self, show_alert: bool = True):
+        last_session = get_last_session(show_alert=show_alert)
         if last_session is None:
             return
 
-        data = YaDiskDownloader(session=last_session).get_path_data(self.path)
-        self.display(data=list(map(
+        downloader = YaDiskDownloader(session=last_session)
+        downloader.load_user_yadisk()
+        data = downloader.get_path_data(self.path)
+        print(self.path, data)
+        to_display = list(map(
             lambda d: {"text": d.name, "callback": "show_file" if isinstance(d, File) else "show_directory"},
             data
-        )))
+        ))
+        if not to_display:
+            to_display = [{"text": "nothing here", "callback": "to_prev_path"},
+                          {"text": "return", "callback": "to_prev_path"}]
+        self.display(data=to_display)
+
+    def to_prev_path(self):
+        self.path = "/".join(self.path.split("/")[:-1])
+        self.display_data_from_yadisk()
 
     def show_file(self):
         print(self.sender().text())
 
     def show_directory(self):
-        self.path = self.path + "/" + self.sender().text()
+        self.path = self.path + self.sender().text() + "/"
+        self.path = self.path.strip("/")
+        print(1192831290283912, self.path)
+
         self.display_data_from_yadisk()
 
-    def display(self, data: list[dict[str, str]], row_width: int = 10, size: int = 100):  # {"text", "callback"}
+    def display(self, data: list[dict[str, str]], row_width: int = 10, size: int = 200):  # {"text", "callback"}
         x_pos = 0
         y_pos = 0
         layout = QGridLayout()
@@ -76,16 +92,6 @@ class FileMainWindow(QMainWindow):
         self.setFixedWidth(layout.maximumSize().width())
         self.setCentralWidget(scroll)
 
-    @staticmethod
-    def with_user_yadisk():
-        last_session = get_last_session()
-        if last_session is None:
-            return
-
-        downloader = YaDiskDownloader(session=last_session)
-        if not downloader.load_user_yadisk():
-            WrongToken().exec()
-
     @property
     def need_registration(self) -> bool:
         return True  # ToDo: Связать с настройками логаута
@@ -93,7 +99,7 @@ class FileMainWindow(QMainWindow):
     @property
     def need_valid_token(self):
         last_session = get_last_session()
-        return (last_session is None) or (not YaDiskDownloader(last_session).is_token_valid)
+        return (last_session is None) or (not last_session.user.config.has_valid_token)
 
     def handle_toolbar(self):
         self.action_3.triggered.connect(self.debug_action)

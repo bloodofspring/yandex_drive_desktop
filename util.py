@@ -1,15 +1,19 @@
 from app_windows.dialog_samples import EmptyDialog
-from database.models import Session
+from database.models import Session, File, FileDirectory
 
 
 class AuthFailed(EmptyDialog):
     INFO = "Ошибка авторизации! Пожалуйста, перезайдите в аккаунт."
 
 
-def get_last_session() -> Session | None:
+def get_last_session(show_alert: bool = True) -> Session | None:
     try:
         return Session.select().order_by(Session.created_at.desc())[0]
     except IndexError:
-        AuthFailed().exec()
+        if show_alert:
+            AuthFailed().exec()
 
         return None
+
+
+# print(*map(lambda x: x.path, File.select()), sep="\n")
