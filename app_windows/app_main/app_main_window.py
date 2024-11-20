@@ -5,6 +5,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QMainWindow, QApplication, QGridLayout, QScrollArea, QPushButton, QWidget
 
 from app_windows import GetAuthTokenDialog
+from app_windows.app_main.updating_dialog import Updating
 from app_windows.img_viewer import ImageViewer
 from app_windows.registration import RegistrationDialog
 from app_windows.text_editor import TextEditor
@@ -49,6 +50,7 @@ class FileMainWindow(QMainWindow):
 
     def update_data(self):
         downloader = YaDiskDownloader(session=self.session)
+        Updating().exec()
         downloader.load_user_yadisk()
 
     def to_prev_path(self):
