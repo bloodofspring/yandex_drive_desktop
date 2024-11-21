@@ -72,8 +72,6 @@ class FileMainWindow(QMainWindow):
             ImageViewer(full_file_way=full_way).exec()
             return
 
-        # ToDo: y0_AgAAAABbrn-dAAytFAAAAAEWHlNBAAC6nwOkrw1PRIVqTDXHTXjnv11kaA
-
     def show_directory(self):
         self.path = self.path + self.sender().text() + "/"
         self.render_window()
@@ -133,7 +131,7 @@ class FileMainWindow(QMainWindow):
 
     def handle_toolbar(self):
         self.action_3.triggered.connect(lambda _: AddLater().exec())
-        self.action_4.triggered.connect(lambda _: ChangeAuthTokenDialog().exec())  # ToDo: протестировать
+        self.action_4.triggered.connect(lambda _: ChangeAuthTokenDialog().exec())
         self.action_5.triggered.connect(lambda _: AddLater().exec())
         self.action_6.triggered.connect(lambda _: AddLater().exec())
         self.action_7.triggered.connect(lambda _: ChangeLoginpasDialog().exec())
