@@ -72,4 +72,3 @@ Yandex Drive Desktop предоставляет все преимущества 
 ### Разработчики
 Нашим проектом занимается 1 разработчик.
 1. Github: https://github.com/bloodofspring/
-2. Gmail (for Q's): t.shagin@gmail.com
